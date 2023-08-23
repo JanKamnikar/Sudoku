@@ -2,7 +2,12 @@ type available = { loc : int * int; possible : int list }
 
 (* TODO: tip stanja ustrezno popravite, saj boste med reševanjem zaradi učinkovitosti
    želeli imeti še kakšno dodatno informacijo *)
-type state = { problem : Model.problem; current_grid : int option Model.grid }(* si ga malo popravis *)
+type state = { problem : Model.problem; current_grid : int option Model.grid; available_grid: available Model.grid }
+(* Dopisal še available_grid *)
+
+(* spremeni seznam v grid *)
+let sudokuify list =
+  list |> Model.chunkify 9 |> List.map Array.of_list |> Array.of_list
 
 let print_state (state : state) : unit =
   Model.print_grid

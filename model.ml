@@ -16,20 +16,21 @@ let chunkify size lst =
   in
   aux [] [] size lst
 
-let string_of_list string_of_element sep lst =
-  lst |> List.map string_of_element |> String.concat sep
+(* f x = x |>  f *)
+let string_of_list string_of_element sep lst = (*vzame seznam, vsak njegov element pretvori v string z mapom in vse te stringe združi v en string z ločilom sep *)
+  lst |> List.map string_of_element |> String.concat sep (*String.concat vzame sep-arator in list stringov in jih združi v en string *)
 
-let string_of_nested_list string_of_element inner_sep outer_sep =
+let string_of_nested_list string_of_element inner_sep outer_sep =(*seznam seznamov pretvori v seznam stringov ločenih z inner in nato v velik string ločen z outer *)
   string_of_list (string_of_list string_of_element inner_sep) outer_sep
 
-let string_of_row string_of_cell row =
+let string_of_row string_of_cell row = (*spremeni row(array) v seznam seznmov dolžine 3 ki jih potem zlepi skupaj v en velik seznam kjer sse elementi podseznamov držijo skupaj elementi seznama pa so ločeni z | *)
   let string_of_cells =
     row |> Array.to_list |> chunkify 3
     |> string_of_nested_list string_of_cell "" "│"
   in
   "┃" ^ string_of_cells ^ "┃\n"
 
-let print_grid string_of_cell grid =
+let print_grid string_of_cell grid =(*grid spremeni v seznam, ta seznam pa v sezname po 3, vrstico razdeli z | in nato vsako trojico vrstic razdeli z divider-jom*)
   let ln = "───" in
   let big = "━━━" in
   let divider = "┠" ^ ln ^ "┼" ^ ln ^ "┼" ^ ln ^ "┨\n" in
@@ -43,18 +44,21 @@ let print_grid string_of_cell grid =
 
 (* Funkcije za dostopanje do elementov mreže *)
 
-let get_row (grid : 'a grid) (row_ind : int) = failwith "TODO"
+let get_row (grid : 'a grid) (row_ind : int) = (*Iz grida, ti vrne vrstico row_ind *)
+grid.(row_ind)
 
-let rows grid = failwith "TODO"
+let rows grid = (* vrne ti seznam vrstic po vrsti*)
+List.init 9 (get_row grid) 
 
-let get_column (grid : 'a grid) (col_ind : int) =
+
+let get_column (grid : 'a grid) (col_ind : int) = (*ti vrne stolpec iz grida  *)
   Array.init 9 (fun row_ind -> grid.(row_ind).(col_ind))
 
-let columns grid = List.init 9 (get_column grid)
+let columns grid = List.init 9 (get_column grid)(* ti vrne seznam arreyej(stolpcev) *)
 
 let get_box (grid : 'a grid) (box_ind : int) = failwith "TODO"
 
-let boxes grid = failwith "TODO"
+let boxes grid = List.init 9 (get_column grid)(* ti vrne seznam arreyej(BOXOV) *)
 
 (* Funkcije za ustvarjanje novih mrež *)
 
