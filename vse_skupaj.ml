@@ -259,10 +259,8 @@ let rec update_and_validate_state (state : state) =  (*počisti stanje, dokler n
         match validate_state posodobljen_state napacno with (* za obravnavo robnih problemov *)
         | Solved solution -> Solved solution
         | Fail fail -> Fail fail
-        | Unsolved state -> if (List.length (seznam_dveh_moznih nov_grid nov_available_grid) > 0) then 
-          Unsolved state
-        else 
-          update_and_validate_state posodobljen_state
+        | Unsolved state -> if (List.length (seznam_dveh_moznih nov_grid nov_available_grid) > 0) 
+                            then Unsolved state else update_and_validate_state posodobljen_state
 
           
 let vstavi_novo_vrednost grid row col vrednost = 
